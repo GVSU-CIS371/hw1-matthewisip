@@ -1,21 +1,13 @@
 <template>
-  <div class="froth" :style="{ backgroundColor: creamerColors[currentCreamer] }">
-    <div v-for="(_, index) in 5" :key="index" class="foam"></div>
+  <div class="froth">
+    <div v-for=" in 5" class="foam" :style = "{ backgroundColor: currentCream.color }"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-
-const props = defineProps<{ currentCreamer: string }>();
-
-const creamerColors: Record<string, string> = {
-  "No Cream": "transparent",
-  "Milk": "#f3e5ab",
-  "Cream": "#edd9a3",
-  "Half & Half": "#e0c9a6"
-};
+  import {currentCream} from "../stores/beverage";
 </script>
+
 <style lang="scss" scoped>
 .froth {
   overflow: visible;

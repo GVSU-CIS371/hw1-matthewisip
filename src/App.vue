@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Beverage :isIced="currentTemp === 'Cold'" :currentBase="currentBase" :currentSyrup="currentSyrup":currentCreamer="currentCreamer" />
+    <Beverage :isIced="currentTemp === 'Cold'" />
     <ul>
       <li>
         <template v-for="temp in temps" :key="temp">
@@ -17,78 +17,68 @@
         </template>
       </li>
     </ul>
-  </div>
-  <div>
-    <Base :currentBase="currentBase" />
+
     <ul>
       <li>
-        <template v-for="base in baseOptions" :key="base">
+        <template v-for="base in bases" :key="base.id">
           <label>
             <input
               type="radio"
-              name="base"
-              :id="`r${base}`"
+              name="baseBeverage"
+              :id="`r${base.id}`"
               :value="base"
               v-model="currentBase"
             />
-            {{ base }}
+            {{ base.name }}
           </label>
         </template>
       </li>
     </ul>
-  </div>
-  <div>
-    <Creamer :isCreamer="currentCreamer === 'No Cream'" />
+    <!-- <BaseBeverage :color="currentBase.color" /> -->
+
     <ul>
       <li>
-        <template v-for="creamer in creamerOptions" :key="creamer">
+        <template v-for="(cream, index) in creamers" :key="cream.id">
           <label>
             <input
               type="radio"
               name="creamer"
-              :id="`r${creamer}`"
-              :value="creamer"
-              v-model="currentCreamer"
+              :id="`r${cream.id}`"
+              :value="cream"
+              :checked="index === 0"
+              v-model="currentCream"
             />
-            {{ creamer }}
+            {{ cream.name }}
           </label>
         </template>
       </li>
     </ul>
-  </div>
-  <div>
-    <Syrup :isSyrup="currentSyrup === 'No Syrup'" />
+
     <ul>
       <li>
-        <template v-for="syrup in syrupOptions" :key="syrup">
+        <template v-for="(syrup, index) in syrups" :key="syrup.id">
           <label>
             <input
               type="radio"
               name="syrup"
-              :id="`r${syrup}`"
+              :id="`r${syrup.id}`"
               :value="syrup"
+              :checked="index===0"
               v-model="currentSyrup"
             />
-            {{ syrup }}
+            {{ syrup.name }}
           </label>
         </template>
       </li>
     </ul>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import Beverage from "./components/Beverage.vue";
-import { temps, currentTemp } from "./stores/beverage";
-
-const baseOptions = ["Black Tea", "Green Tea", "Coffee"];
-const creamerOptions = ["No Cream", "Milk", "Cream", "Half & Half"];
-const syrupOptions = ["No Syrup", "Vanilla", "Caramel", "Hazelnut"];
-
-const currentBase = ref(baseOptions[0]);
-const currentCreamer = ref(creamerOptions[0]);
-const currentSyrup = ref(syrupOptions[0]);
+import { currentTemp, currentBase, currentCream, currentSyrup } from "./stores/beverage";
+import { temps, bases, creamers, syrups } from "./stores/beverage";
 </script>
 
 <style lang="scss">
@@ -96,7 +86,6 @@ body,
 html {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -105,12 +94,5 @@ html {
 }
 ul {
   list-style: none;
-}
-div {
-  margin: 10px 0;
-}
-
-input[type="radio"] {
-  margin-right: 5px;
 }
 </style>
